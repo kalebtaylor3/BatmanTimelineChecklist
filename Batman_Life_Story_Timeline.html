@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Batman Life Story Timeline</title>
+<style>
+  :root {
+    --bg: #0b0d10;
+    --panel: #13171d;
+    --panel-2: #191f27;
+    --panel-3: #10141a;
+    --text: #f3f4f6;
+    --muted: #a7b0be;
+    --accent: #f4d35e;
+    --accent-2: #c8a93b;
+    --border: #2a313c;
+    --done: #1d3b2a;
+    --optional: #211a2f;
+    --danger: #8d2f2f;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:
+      radial-gradient(circle at top, rgba(244,211,94,.08), transparent 30%),
+      linear-gradient(180deg, #090b0e 0%, #0b0d10 100%);
+    color: var(--text);
+  }
+
+  .wrap {
+    width: min(1080px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 42px 0 72px;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #151a21, #0f1217);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 28px;
+    box-shadow: 0 18px 50px rgba(0,0,0,.35);
+    margin-bottom: 22px;
+  }
+
+  .eyebrow {
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(30px, 5vw, 54px);
+    line-height: 1;
+    letter-spacing: -.03em;
+  }
+
+  .subtitle {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 820px;
+  }
+
+  .progress-grid {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .progress-track {
+    height: 14px;
+    background: #232a34;
+    border: 1px solid #303844;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    transition: width .2s ease;
+  }
+
+  .progress-text {
+    font-weight: 800;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .stats {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 8px;
+    z-index: 20;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid rgba(42,49,60,.92);
+    background: rgba(11,13,16,.9);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+  }
+
+  button {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font: inherit;
+    cursor: pointer;
+    transition: .15s ease;
+  }
+
+  button:hover {
+    transform: translateY(-1px);
+    border-color: #48515f;
+  }
+
+  button.primary {
+    background: var(--accent);
+    color: #101216;
+    border-color: var(--accent);
+    font-weight: 800;
+  }
+
+  button.danger { color: #ffd7d7; }
+
+  .section { margin-top: 30px; }
+
+  .section-title {
+    font-size: 15px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-weight: 900;
+    margin: 0 0 12px 4px;
+  }
+
+  .arc {
+    margin: 0 0 18px;
+    background: var(--panel-3);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .arc-head {
+    padding: 15px 16px 13px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(244,211,94,.055), transparent 55%);
+  }
+
+  .arc-title-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-wrap: wrap;
+  }
+
+  .arc-number {
+    color: #7f8a99;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .arc-title {
+    font-size: 18px;
+    font-weight: 850;
+    letter-spacing: -.01em;
+  }
+
+  .arc-why {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.45;
+    margin-top: 6px;
+    max-width: 850px;
+  }
+
+  .optional-badge {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #4a3d62;
+    color: #d9c8ef;
+    background: #211a2f;
+    border-radius: 999px;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  .list { display: grid; gap: 1px; }
+
+  .issue {
+    display: grid;
+    grid-template-columns: auto 52px 1fr;
+    gap: 14px;
+    align-items: start;
+    background: var(--panel);
+    padding: 14px 16px;
+    transition: .15s ease;
+  }
+
+  .issue + .issue { border-top: 1px solid #202630; }
+  .issue:hover { background: var(--panel-2); }
+  .issue.optional { background: rgba(33,26,47,.45); }
+  .issue.done { background: var(--done); opacity: .82; }
+  .issue.done .reading-item { text-decoration: line-through; color: #a6b7aa; }
+
+  input[type="checkbox"] {
+    margin-top: 2px;
+    width: 22px;
+    height: 22px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .order {
+    color: #7f8a99;
+    font-size: 13px;
+    padding-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .reading-item {
+    font-weight: 760;
+    font-size: 15px;
+    line-height: 1.3;
+  }
+
+  .note {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .footer {
+    margin-top: 30px;
+    color: #778292;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 650px) {
+    .wrap { width: min(100% - 18px, 1080px); padding-top: 18px; }
+    .hero { padding: 20px; border-radius: 18px; }
+    .toolbar { top: 4px; }
+    .issue { grid-template-columns: auto 38px 1fr; gap: 10px; padding: 13px; }
+    .progress-grid { grid-template-columns: 1fr; }
+    .progress-text { justify-self: start; }
+    .arc-title { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Batman Reading Tracker</div>
+    <h1>Batman: The Life Story Timeline</h1>
+    <p class="subtitle">
+      A clean path through Bruce Wayne's career: <strong>Year One</strong> → the first Bat-Family → Jason Todd →
+      Knightfall → Gotham's collapse → Red Hood → Damian → Batman Incorporated → Court of Owls → modern Batman.
+      Check off issues as you read them. Your progress is saved automatically in this browser.
+    </p>
+
+    <div class="progress-grid">
+      <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+      <div id="progressText" class="progress-text">0 / 0</div>
+    </div>
+    <div id="stats" class="stats">0% complete</div>
+  </div>
+
+  <div class="toolbar">
+    <button class="primary" id="showAllBtn">Show All</button>
+    <button id="hideReadBtn">Hide Read Issues</button>
+    <button id="jumpBtn">Jump to Next Unread</button>
+    <button id="optionalBtn">Hide Optional</button>
+    <button class="danger" id="resetBtn">Reset Progress</button>
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="footer" id="footerText">
+    Offline checklist • Progress saved with localStorage
+  </div>
+</div>
+
+<script>
+const issues = [{"order": 1, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 1, "arc": "Batman: Year One", "item": "Batman #404", "type": "Issue", "optional": false, "note": "", "why": "The modern foundation of Bruce Wayne becoming Batman and Jim Gordon arriving in Gotham."}, {"order": 2, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 1, "arc": "Batman: Year One", "item": "Batman #405", "type": "Issue", "optional": false, "note": "", "why": "The modern foundation of Bruce Wayne becoming Batman and Jim Gordon arriving in Gotham."}, {"order": 3, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 1, "arc": "Batman: Year One", "item": "Batman #406", "type": "Issue", "optional": false, "note": "", "why": "The modern foundation of Bruce Wayne becoming Batman and Jim Gordon arriving in Gotham."}, {"order": 4, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 1, "arc": "Batman: Year One", "item": "Batman #407", "type": "Issue", "optional": false, "note": "", "why": "The modern foundation of Bruce Wayne becoming Batman and Jim Gordon arriving in Gotham."}, {"order": 5, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 2, "arc": "Batman: The Man Who Laughs", "item": "Batman: The Man Who Laughs (2005) one-shot", "type": "Issue", "optional": false, "note": "", "why": "Batman’s first major encounter with the Joker."}, {"order": 6, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #1", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 7, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #2", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 8, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #3", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 9, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #4", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 10, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #5", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 11, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #6", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 12, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #7", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 13, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #8", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 14, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #9", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 15, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #10", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 16, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #11", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 17, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #12", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 18, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 3, "arc": "Batman: The Long Halloween", "item": "Batman: The Long Halloween #13", "type": "Issue", "optional": false, "note": "", "why": "The transition from Gotham mob crime to the supervillain era; Harvey Dent’s fall."}, {"order": 19, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #0", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 20, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #1", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 21, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #2", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 22, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #3", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 23, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #4", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 24, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #5", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 25, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #6", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 26, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #7", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 27, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #8", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 28, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #9", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 29, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #10", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 30, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #11", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 31, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #12", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 32, "act": "ACT I — BRUCE BECOMES BATMAN", "storyNum": 4, "arc": "Batman: Dark Victory", "item": "Batman: Dark Victory #13", "type": "Issue", "optional": false, "note": "", "why": "Direct sequel to The Long Halloween and the origin of Dick Grayson as Robin."}, {"order": 33, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 5, "arc": "Robin: Year One", "item": "Robin: Year One #1", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s first year learning to be Robin."}, {"order": 34, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 5, "arc": "Robin: Year One", "item": "Robin: Year One #2", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s first year learning to be Robin."}, {"order": 35, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 5, "arc": "Robin: Year One", "item": "Robin: Year One #3", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s first year learning to be Robin."}, {"order": 36, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 5, "arc": "Robin: Year One", "item": "Robin: Year One #4", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s first year learning to be Robin."}, {"order": 37, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 6, "arc": "Batgirl: Year One", "item": "Batgirl: Year One #1", "type": "Issue", "optional": false, "note": "", "why": "Barbara Gordon becomes Batgirl and establishes her place beside Batman and Robin."}, {"order": 38, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 6, "arc": "Batgirl: Year One", "item": "Batgirl: Year One #2", "type": "Issue", "optional": false, "note": "", "why": "Barbara Gordon becomes Batgirl and establishes her place beside Batman and Robin."}, {"order": 39, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 6, "arc": "Batgirl: Year One", "item": "Batgirl: Year One #3", "type": "Issue", "optional": false, "note": "", "why": "Barbara Gordon becomes Batgirl and establishes her place beside Batman and Robin."}, {"order": 40, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 6, "arc": "Batgirl: Year One", "item": "Batgirl: Year One #4", "type": "Issue", "optional": false, "note": "", "why": "Barbara Gordon becomes Batgirl and establishes her place beside Batman and Robin."}, {"order": 41, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 6, "arc": "Batgirl: Year One", "item": "Batgirl: Year One #5", "type": "Issue", "optional": false, "note": "", "why": "Barbara Gordon becomes Batgirl and establishes her place beside Batman and Robin."}, {"order": 42, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 6, "arc": "Batgirl: Year One", "item": "Batgirl: Year One #6", "type": "Issue", "optional": false, "note": "", "why": "Barbara Gordon becomes Batgirl and establishes her place beside Batman and Robin."}, {"order": 43, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 6, "arc": "Batgirl: Year One", "item": "Batgirl: Year One #7", "type": "Issue", "optional": false, "note": "", "why": "Barbara Gordon becomes Batgirl and establishes her place beside Batman and Robin."}, {"order": 44, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 6, "arc": "Batgirl: Year One", "item": "Batgirl: Year One #8", "type": "Issue", "optional": false, "note": "", "why": "Barbara Gordon becomes Batgirl and establishes her place beside Batman and Robin."}, {"order": 45, "act": "ACT II — THE BAT-FAMILY BEGINS", "storyNum": 6, "arc": "Batgirl: Year One", "item": "Batgirl: Year One #9", "type": "Issue", "optional": false, "note": "", "why": "Barbara Gordon becomes Batgirl and establishes her place beside Batman and Robin."}, {"order": 46, "act": "ACT III — BATMAN STARTS LOSING PEOPLE", "storyNum": 7, "arc": "Batman: The Killing Joke", "item": "Batman: The Killing Joke (1988) one-shot", "type": "Issue", "optional": false, "note": "", "why": "The defining Batman/Joker psychological confrontation; Barbara Gordon is shot."}, {"order": 47, "act": "ACT III — BATMAN STARTS LOSING PEOPLE", "storyNum": 8, "arc": "Batman: A Death in the Family", "item": "Batman #426", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd, the second Robin, faces the Joker."}, {"order": 48, "act": "ACT III — BATMAN STARTS LOSING PEOPLE", "storyNum": 8, "arc": "Batman: A Death in the Family", "item": "Batman #427", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd, the second Robin, faces the Joker."}, {"order": 49, "act": "ACT III — BATMAN STARTS LOSING PEOPLE", "storyNum": 8, "arc": "Batman: A Death in the Family", "item": "Batman #428", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd, the second Robin, faces the Joker."}, {"order": 50, "act": "ACT III — BATMAN STARTS LOSING PEOPLE", "storyNum": 8, "arc": "Batman: A Death in the Family", "item": "Batman #429", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd, the second Robin, faces the Joker."}, {"order": 51, "act": "ACT III — BATMAN STARTS LOSING PEOPLE", "storyNum": 9, "arc": "Batman: A Lonely Place of Dying", "item": "Batman #440", "type": "Issue", "optional": false, "note": "", "why": "Tim Drake realizes Batman needs a Robin after Jason’s death."}, {"order": 52, "act": "ACT III — BATMAN STARTS LOSING PEOPLE", "storyNum": 9, "arc": "Batman: A Lonely Place of Dying", "item": "The New Titans #60", "type": "Issue", "optional": false, "note": "", "why": "Tim Drake realizes Batman needs a Robin after Jason’s death."}, {"order": 53, "act": "ACT III — BATMAN STARTS LOSING PEOPLE", "storyNum": 9, "arc": "Batman: A Lonely Place of Dying", "item": "Batman #441", "type": "Issue", "optional": false, "note": "", "why": "Tim Drake realizes Batman needs a Robin after Jason’s death."}, {"order": 54, "act": "ACT III — BATMAN STARTS LOSING PEOPLE", "storyNum": 9, "arc": "Batman: A Lonely Place of Dying", "item": "The New Titans #61", "type": "Issue", "optional": false, "note": "", "why": "Tim Drake realizes Batman needs a Robin after Jason’s death."}, {"order": 55, "act": "ACT III — BATMAN STARTS LOSING PEOPLE", "storyNum": 9, "arc": "Batman: A Lonely Place of Dying", "item": "Batman #442", "type": "Issue", "optional": false, "note": "", "why": "Tim Drake realizes Batman needs a Robin after Jason’s death."}, {"order": 56, "act": "ACT IV — CAN BRUCE BE REPLACED?", "storyNum": 10, "arc": "Batman: Knightfall Saga", "item": "Batman: Vengeance of Bane #1 (recommended prelude)", "type": "Issue", "optional": false, "note": "", "why": "Bane breaks Bruce; Jean-Paul Valley/Azrael takes the mantle; Bruce must reclaim what Batman means."}, {"order": 57, "act": "ACT IV — CAN BRUCE BE REPLACED?", "storyNum": 10, "arc": "Batman: Knightfall Saga", "item": "Batman: Knightfall Vol. 1 / Omnibus Vol. 1 — Knightfall", "type": "Collection", "optional": false, "note": "", "why": "Bane breaks Bruce; Jean-Paul Valley/Azrael takes the mantle; Bruce must reclaim what Batman means."}, {"order": 58, "act": "ACT IV — CAN BRUCE BE REPLACED?", "storyNum": 10, "arc": "Batman: Knightfall Saga", "item": "Batman: Knightfall Vol. 2 / Omnibus Vol. 2 — Knightquest", "type": "Collection", "optional": false, "note": "", "why": "Bane breaks Bruce; Jean-Paul Valley/Azrael takes the mantle; Bruce must reclaim what Batman means."}, {"order": 59, "act": "ACT IV — CAN BRUCE BE REPLACED?", "storyNum": 10, "arc": "Batman: Knightfall Saga", "item": "Batman: Knightfall Vol. 3 / Omnibus Vol. 3 — KnightsEnd", "type": "Collection", "optional": false, "note": "", "why": "Bane breaks Bruce; Jean-Paul Valley/Azrael takes the mantle; Bruce must reclaim what Batman means."}, {"order": 60, "act": "ACT IV — CAN BRUCE BE REPLACED?", "storyNum": 10, "arc": "Batman: Knightfall Saga", "item": "Core breaking point: Batman #497 — Bane breaks the Bat", "type": "Issue", "optional": false, "note": "", "why": "Bane breaks Bruce; Jean-Paul Valley/Azrael takes the mantle; Bruce must reclaim what Batman means."}, {"order": 61, "act": "ACT V — BATMAN AND GOTHAM", "storyNum": 11, "arc": "Batman: No Man’s Land", "item": "Batman: Cataclysm (optional but useful setup)", "type": "Optional setup", "optional": true, "note": "", "why": "Gotham is devastated and abandoned; Batman and the Bat-Family fight to restore the city."}, {"order": 62, "act": "ACT V — BATMAN AND GOTHAM", "storyNum": 11, "arc": "Batman: No Man’s Land", "item": "Batman: Road to No Man’s Land (optional setup)", "type": "Optional setup", "optional": true, "note": "", "why": "Gotham is devastated and abandoned; Batman and the Bat-Family fight to restore the city."}, {"order": 63, "act": "ACT V — BATMAN AND GOTHAM", "storyNum": 11, "arc": "Batman: No Man’s Land", "item": "Batman: No Man’s Land Omnibus Vol. 1", "type": "Collection", "optional": false, "note": "", "why": "Gotham is devastated and abandoned; Batman and the Bat-Family fight to restore the city."}, {"order": 64, "act": "ACT V — BATMAN AND GOTHAM", "storyNum": 11, "arc": "Batman: No Man’s Land", "item": "Batman: No Man’s Land Omnibus Vol. 2", "type": "Collection", "optional": false, "note": "", "why": "Gotham is devastated and abandoned; Batman and the Bat-Family fight to restore the city."}, {"order": 65, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #608", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 66, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #609", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 67, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #610", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 68, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #611", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 69, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #612", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 70, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #613", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 71, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #614", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 72, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #615", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 73, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #616", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 74, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #617", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 75, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #618", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 76, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 12, "arc": "Batman: Hush", "item": "Batman #619", "type": "Issue", "optional": false, "note": "", "why": "A tour through Bruce’s established world, rogues, allies, and relationship with Selina Kyle."}, {"order": 77, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #635", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 78, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #636", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 79, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #637", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 80, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #638", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 81, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #639", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 82, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #640", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 83, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #641", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 84, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #645", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 85, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #646", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 86, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #647", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 87, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #648", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 88, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #649", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 89, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman #650", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 90, "act": "ACT VI — ESTABLISHED BATMAN", "storyNum": 13, "arc": "Batman: Under the Red Hood", "item": "Batman Annual #25", "type": "Issue", "optional": false, "note": "", "why": "Jason Todd returns and directly challenges Batman’s no-kill rule."}, {"order": 91, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 14, "arc": "Batman and Son", "item": "Batman #655", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers Damian Wayne and begins dealing with fatherhood."}, {"order": 92, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 14, "arc": "Batman and Son", "item": "Batman #656", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers Damian Wayne and begins dealing with fatherhood."}, {"order": 93, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 14, "arc": "Batman and Son", "item": "Batman #657", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers Damian Wayne and begins dealing with fatherhood."}, {"order": 94, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 14, "arc": "Batman and Son", "item": "Batman #658", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers Damian Wayne and begins dealing with fatherhood."}, {"order": 95, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 14, "arc": "Batman and Son", "item": "Batman #663", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers Damian Wayne and begins dealing with fatherhood."}, {"order": 96, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 14, "arc": "Batman and Son", "item": "Batman #664", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers Damian Wayne and begins dealing with fatherhood."}, {"order": 97, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 14, "arc": "Batman and Son", "item": "Batman #665", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers Damian Wayne and begins dealing with fatherhood."}, {"order": 98, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 14, "arc": "Batman and Son", "item": "Batman #666", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers Damian Wayne and begins dealing with fatherhood."}, {"order": 99, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 15, "arc": "Batman: The Black Glove", "item": "Batman #667", "type": "Issue", "optional": false, "note": "", "why": "The psychological attack on Batman begins."}, {"order": 100, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 15, "arc": "Batman: The Black Glove", "item": "Batman #668", "type": "Issue", "optional": false, "note": "", "why": "The psychological attack on Batman begins."}, {"order": 101, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 15, "arc": "Batman: The Black Glove", "item": "Batman #669", "type": "Issue", "optional": false, "note": "", "why": "The psychological attack on Batman begins."}, {"order": 102, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 15, "arc": "Batman: The Black Glove", "item": "Batman #670", "type": "Issue", "optional": false, "note": "", "why": "The psychological attack on Batman begins."}, {"order": 103, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 15, "arc": "Batman: The Black Glove", "item": "Batman #671", "type": "Issue", "optional": false, "note": "", "why": "The psychological attack on Batman begins."}, {"order": 104, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 15, "arc": "Batman: The Black Glove", "item": "Batman #672", "type": "Issue", "optional": false, "note": "", "why": "The psychological attack on Batman begins."}, {"order": 105, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 15, "arc": "Batman: The Black Glove", "item": "Batman #673", "type": "Issue", "optional": false, "note": "", "why": "The psychological attack on Batman begins."}, {"order": 106, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 15, "arc": "Batman: The Black Glove", "item": "Batman #674", "type": "Issue", "optional": false, "note": "", "why": "The psychological attack on Batman begins."}, {"order": 107, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 15, "arc": "Batman: The Black Glove", "item": "Batman #675", "type": "Issue", "optional": false, "note": "", "why": "The psychological attack on Batman begins."}, {"order": 108, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 16, "arc": "Batman R.I.P.", "item": "Batman #676", "type": "Issue", "optional": false, "note": "", "why": "Bruce Wayne/Batman is psychologically dismantled and pushed to his limit."}, {"order": 109, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 16, "arc": "Batman R.I.P.", "item": "Batman #677", "type": "Issue", "optional": false, "note": "", "why": "Bruce Wayne/Batman is psychologically dismantled and pushed to his limit."}, {"order": 110, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 16, "arc": "Batman R.I.P.", "item": "Batman #678", "type": "Issue", "optional": false, "note": "", "why": "Bruce Wayne/Batman is psychologically dismantled and pushed to his limit."}, {"order": 111, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 16, "arc": "Batman R.I.P.", "item": "Batman #679", "type": "Issue", "optional": false, "note": "", "why": "Bruce Wayne/Batman is psychologically dismantled and pushed to his limit."}, {"order": 112, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 16, "arc": "Batman R.I.P.", "item": "Batman #680", "type": "Issue", "optional": false, "note": "", "why": "Bruce Wayne/Batman is psychologically dismantled and pushed to his limit."}, {"order": 113, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 16, "arc": "Batman R.I.P.", "item": "Batman #681", "type": "Issue", "optional": false, "note": "", "why": "Bruce Wayne/Batman is psychologically dismantled and pushed to his limit."}, {"order": 114, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 17, "arc": "Final Crisis", "item": "Final Crisis #1", "type": "Issue", "optional": false, "note": "", "why": "The larger DC event where Bruce confronts Darkseid and is apparently killed/sent through time."}, {"order": 115, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 17, "arc": "Final Crisis", "item": "Final Crisis #2", "type": "Issue", "optional": false, "note": "", "why": "The larger DC event where Bruce confronts Darkseid and is apparently killed/sent through time."}, {"order": 116, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 17, "arc": "Final Crisis", "item": "Final Crisis #3", "type": "Issue", "optional": false, "note": "", "why": "The larger DC event where Bruce confronts Darkseid and is apparently killed/sent through time."}, {"order": 117, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 17, "arc": "Final Crisis", "item": "Final Crisis #4", "type": "Issue", "optional": false, "note": "", "why": "The larger DC event where Bruce confronts Darkseid and is apparently killed/sent through time."}, {"order": 118, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 17, "arc": "Final Crisis", "item": "Final Crisis #5", "type": "Issue", "optional": false, "note": "", "why": "The larger DC event where Bruce confronts Darkseid and is apparently killed/sent through time."}, {"order": 119, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 17, "arc": "Final Crisis", "item": "Final Crisis #6", "type": "Issue", "optional": false, "note": "", "why": "The larger DC event where Bruce confronts Darkseid and is apparently killed/sent through time."}, {"order": 120, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 17, "arc": "Final Crisis", "item": "Final Crisis #7", "type": "Issue", "optional": false, "note": "", "why": "The larger DC event where Bruce confronts Darkseid and is apparently killed/sent through time."}, {"order": 121, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 17, "arc": "Final Crisis", "item": "Batman #682", "type": "Issue", "optional": false, "note": "", "why": "The larger DC event where Bruce confronts Darkseid and is apparently killed/sent through time."}, {"order": 122, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 17, "arc": "Final Crisis", "item": "Batman #683", "type": "Issue", "optional": false, "note": "", "why": "The larger DC event where Bruce confronts Darkseid and is apparently killed/sent through time."}, {"order": 123, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #1", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 124, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #2", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 125, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #3", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 126, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #4", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 127, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #5", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 128, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #6", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 129, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #7", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 130, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #8", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 131, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #9", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 132, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #10", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 133, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #11", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 134, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #12", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 135, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #13", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 136, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #14", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 137, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #15", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 138, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 18, "arc": "Batman & Robin — Grant Morrison", "item": "Batman and Robin (2009) #16", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson becomes Batman; Damian Wayne becomes Robin."}, {"order": 139, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 19, "arc": "The Return of Bruce Wayne", "item": "The Return of Bruce Wayne #1", "type": "Issue", "optional": false, "note": "", "why": "Bruce fights his way back through time."}, {"order": 140, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 19, "arc": "The Return of Bruce Wayne", "item": "The Return of Bruce Wayne #2", "type": "Issue", "optional": false, "note": "", "why": "Bruce fights his way back through time."}, {"order": 141, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 19, "arc": "The Return of Bruce Wayne", "item": "The Return of Bruce Wayne #3", "type": "Issue", "optional": false, "note": "", "why": "Bruce fights his way back through time."}, {"order": 142, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 19, "arc": "The Return of Bruce Wayne", "item": "The Return of Bruce Wayne #4", "type": "Issue", "optional": false, "note": "", "why": "Bruce fights his way back through time."}, {"order": 143, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 19, "arc": "The Return of Bruce Wayne", "item": "The Return of Bruce Wayne #5", "type": "Issue", "optional": false, "note": "", "why": "Bruce fights his way back through time."}, {"order": 144, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 19, "arc": "The Return of Bruce Wayne", "item": "The Return of Bruce Wayne #6", "type": "Issue", "optional": false, "note": "", "why": "Bruce fights his way back through time."}, {"order": 145, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #871", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 146, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #872", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 147, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #873", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 148, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #874", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 149, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #875", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 150, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #876", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 151, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #877", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 152, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #878", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 153, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #879", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 154, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #880", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 155, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 20, "arc": "Batman: The Black Mirror", "item": "Detective Comics #881", "type": "Issue", "optional": false, "note": "", "why": "Dick Grayson’s Batman detective/horror masterpiece; best read here before Batman Incorporated."}, {"order": 156, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2010) #1", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 157, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2010) #2", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 158, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2010) #3", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 159, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2010) #4", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 160, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2010) #5", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 161, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2010) #6", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 162, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2010) #7", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 163, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2010) #8", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 164, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated: Leviathan Strikes! #1", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 165, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #0", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 166, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #1", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 167, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #2", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 168, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #3", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 169, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #4", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 170, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #5", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 171, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #6", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 172, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #7", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 173, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #8", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 174, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #9", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 175, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #10", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 176, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #11", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 177, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #12", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 178, "act": "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "storyNum": 21, "arc": "Batman Incorporated", "item": "Batman Incorporated (2012) #13", "type": "Issue", "optional": false, "note": "", "why": "Bruce turns Batman into a global mission and Damian’s story becomes central."}, {"order": 179, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #1", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 180, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #2", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 181, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #3", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 182, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #4", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 183, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #5", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 184, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #6", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 185, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #7", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 186, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #8", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 187, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #9", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 188, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #10", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 189, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman (2011) #11", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 190, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 22, "arc": "Batman: The Court of Owls / City of Owls", "item": "Batman Annual (2012) #1", "type": "Issue", "optional": false, "note": "", "why": "Bruce discovers that Gotham may know him far less than he thinks."}, {"order": 191, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 23, "arc": "Batman: Death of the Family", "item": "Batman (2011) #13", "type": "Issue", "optional": false, "note": "", "why": "Joker attacks Bruce’s relationship with the Bat-Family."}, {"order": 192, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 23, "arc": "Batman: Death of the Family", "item": "Batman (2011) #14", "type": "Issue", "optional": false, "note": "", "why": "Joker attacks Bruce’s relationship with the Bat-Family."}, {"order": 193, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 23, "arc": "Batman: Death of the Family", "item": "Batman (2011) #15", "type": "Issue", "optional": false, "note": "", "why": "Joker attacks Bruce’s relationship with the Bat-Family."}, {"order": 194, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 23, "arc": "Batman: Death of the Family", "item": "Batman (2011) #16", "type": "Issue", "optional": false, "note": "", "why": "Joker attacks Bruce’s relationship with the Bat-Family."}, {"order": 195, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 23, "arc": "Batman: Death of the Family", "item": "Batman (2011) #17", "type": "Issue", "optional": false, "note": "", "why": "Joker attacks Bruce’s relationship with the Bat-Family."}, {"order": 196, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 24, "arc": "Batman: Endgame", "item": "Batman (2011) #35", "type": "Issue", "optional": false, "note": "", "why": "A major capstone to Snyder’s Batman/Joker story."}, {"order": 197, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 24, "arc": "Batman: Endgame", "item": "Batman (2011) #36", "type": "Issue", "optional": false, "note": "", "why": "A major capstone to Snyder’s Batman/Joker story."}, {"order": 198, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 24, "arc": "Batman: Endgame", "item": "Batman (2011) #37", "type": "Issue", "optional": false, "note": "", "why": "A major capstone to Snyder’s Batman/Joker story."}, {"order": 199, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 24, "arc": "Batman: Endgame", "item": "Batman (2011) #38", "type": "Issue", "optional": false, "note": "", "why": "A major capstone to Snyder’s Batman/Joker story."}, {"order": 200, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 24, "arc": "Batman: Endgame", "item": "Batman (2011) #39", "type": "Issue", "optional": false, "note": "", "why": "A major capstone to Snyder’s Batman/Joker story."}, {"order": 201, "act": "ACT VIII — THE MODERN BATMAN ERA", "storyNum": 24, "arc": "Batman: Endgame", "item": "Batman (2011) #40", "type": "Issue", "optional": false, "note": "", "why": "A major capstone to Snyder’s Batman/Joker story."}, {"order": 202, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "DC Universe: Rebirth #1 (Batman-related setup; optional)", "type": "Optional setup", "optional": true, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 203, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman: Rebirth #1", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 204, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #1", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 205, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #2", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 206, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #3", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 207, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #4", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 208, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #5", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 209, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #6", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 210, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #9", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 211, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #10", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 212, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #11", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 213, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #12", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 214, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #13", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 215, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #14", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 216, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #15", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 217, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #16", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 218, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #17", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 219, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #18", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 220, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #19", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 221, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 25, "arc": "I Am Gotham → I Am Suicide → I Am Bane", "item": "Batman (2016) #20", "type": "Issue", "optional": false, "note": "", "why": "The opening movement of Tom King’s run: Bruce’s psychology, Bane, and Selina become central."}, {"order": 222, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 26, "arc": "Batman: The Wedding", "item": "Batman (2016) #45", "type": "Issue", "optional": false, "note": "", "why": "Bruce and Selina seriously attempt to build a future together."}, {"order": 223, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 26, "arc": "Batman: The Wedding", "item": "Batman (2016) #46", "type": "Issue", "optional": false, "note": "", "why": "Bruce and Selina seriously attempt to build a future together."}, {"order": 224, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 26, "arc": "Batman: The Wedding", "item": "Batman (2016) #47", "type": "Issue", "optional": false, "note": "", "why": "Bruce and Selina seriously attempt to build a future together."}, {"order": 225, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 26, "arc": "Batman: The Wedding", "item": "Batman (2016) #48", "type": "Issue", "optional": false, "note": "", "why": "Bruce and Selina seriously attempt to build a future together."}, {"order": 226, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 26, "arc": "Batman: The Wedding", "item": "Batman (2016) #49", "type": "Issue", "optional": false, "note": "", "why": "Bruce and Selina seriously attempt to build a future together."}, {"order": 227, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 26, "arc": "Batman: The Wedding", "item": "Batman (2016) #50", "type": "Issue", "optional": false, "note": "", "why": "Bruce and Selina seriously attempt to build a future together."}, {"order": 228, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 26, "arc": "Batman: The Wedding", "item": "Batman Annual (2016) #2", "type": "Issue", "optional": false, "note": "", "why": "Bruce and Selina seriously attempt to build a future together."}, {"order": 229, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #75", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 230, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #76", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 231, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #77", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 232, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #78", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 233, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #79", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 234, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #80", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 235, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #81", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 236, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #82", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 237, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #83", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 238, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #84", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 239, "act": "ACT IX — BRUCE TRIES TO BUILD A LIFE", "storyNum": 27, "arc": "Batman: City of Bane", "item": "Batman (2016) #85", "type": "Issue", "optional": false, "note": "", "why": "Bane takes Gotham and Bruce suffers one of the defining losses of his later career."}, {"order": 240, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 28, "arc": "Batman: Failsafe", "item": "Batman (2016) #125", "type": "Issue", "optional": false, "note": "", "why": "Batman’s own contingency for stopping himself activates."}, {"order": 241, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 28, "arc": "Batman: Failsafe", "item": "Batman (2016) #126", "type": "Issue", "optional": false, "note": "", "why": "Batman’s own contingency for stopping himself activates."}, {"order": 242, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 28, "arc": "Batman: Failsafe", "item": "Batman (2016) #127", "type": "Issue", "optional": false, "note": "", "why": "Batman’s own contingency for stopping himself activates."}, {"order": 243, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 28, "arc": "Batman: Failsafe", "item": "Batman (2016) #128", "type": "Issue", "optional": false, "note": "", "why": "Batman’s own contingency for stopping himself activates."}, {"order": 244, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 28, "arc": "Batman: Failsafe", "item": "Batman (2016) #129", "type": "Issue", "optional": false, "note": "", "why": "Batman’s own contingency for stopping himself activates."}, {"order": 245, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 28, "arc": "Batman: Failsafe", "item": "Batman (2016) #130", "type": "Issue", "optional": false, "note": "", "why": "Batman’s own contingency for stopping himself activates."}, {"order": 246, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 29, "arc": "Batman Vol. 1: Daylight", "item": "Batman (2025) #1", "type": "Issue", "optional": false, "note": "", "why": "Matt Fraction and Jorge Jiménez’s 2025 jumping-on point for the current flagship Batman era."}, {"order": 247, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 29, "arc": "Batman Vol. 1: Daylight", "item": "Batman (2025) #2", "type": "Issue", "optional": false, "note": "", "why": "Matt Fraction and Jorge Jiménez’s 2025 jumping-on point for the current flagship Batman era."}, {"order": 248, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 29, "arc": "Batman Vol. 1: Daylight", "item": "Batman (2025) #3", "type": "Issue", "optional": false, "note": "", "why": "Matt Fraction and Jorge Jiménez’s 2025 jumping-on point for the current flagship Batman era."}, {"order": 249, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 29, "arc": "Batman Vol. 1: Daylight", "item": "Batman (2025) #4", "type": "Issue", "optional": false, "note": "", "why": "Matt Fraction and Jorge Jiménez’s 2025 jumping-on point for the current flagship Batman era."}, {"order": 250, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 29, "arc": "Batman Vol. 1: Daylight", "item": "Batman (2025) #5", "type": "Issue", "optional": false, "note": "", "why": "Matt Fraction and Jorge Jiménez’s 2025 jumping-on point for the current flagship Batman era."}, {"order": 251, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 29, "arc": "Batman Vol. 1: Daylight", "item": "Batman (2025) #6", "type": "Issue", "optional": false, "note": "", "why": "Matt Fraction and Jorge Jiménez’s 2025 jumping-on point for the current flagship Batman era."}, {"order": 252, "act": "ACT X — PRESENT-DAY BATMAN", "storyNum": 30, "arc": "Continue Batman (2025–)", "item": "Batman (2025) #7 and onward — continue in issue order", "type": "Issue", "optional": false, "note": "", "why": "Once you reach here, you are essentially caught up to the current flagship era."}, {"order": 253, "act": "OPTIONAL — GREAT BATMAN STORIES TO READ AFTERWARD", "storyNum": null, "arc": "Optional Extras", "item": "Batman: The Dark Knight Returns", "type": "Story / Collection", "optional": true, "note": "", "why": "Excellent Batman stories outside the clean main continuity path."}, {"order": 254, "act": "OPTIONAL — GREAT BATMAN STORIES TO READ AFTERWARD", "storyNum": null, "arc": "Optional Extras", "item": "Batman: Earth One", "type": "Story / Collection", "optional": true, "note": "", "why": "Excellent Batman stories outside the clean main continuity path."}, {"order": 255, "act": "OPTIONAL — GREAT BATMAN STORIES TO READ AFTERWARD", "storyNum": null, "arc": "Optional Extras", "item": "Batman: White Knight", "type": "Story / Collection", "optional": true, "note": "", "why": "Excellent Batman stories outside the clean main continuity path."}, {"order": 256, "act": "OPTIONAL — GREAT BATMAN STORIES TO READ AFTERWARD", "storyNum": null, "arc": "Optional Extras", "item": "Batman: Ego", "type": "Story / Collection", "optional": true, "note": "", "why": "Excellent Batman stories outside the clean main continuity path."}, {"order": 257, "act": "OPTIONAL — GREAT BATMAN STORIES TO READ AFTERWARD", "storyNum": null, "arc": "Optional Extras", "item": "Batman: Arkham Asylum — A Serious House on Serious Earth", "type": "Story / Collection", "optional": true, "note": "", "why": "Excellent Batman stories outside the clean main continuity path."}, {"order": 258, "act": "OPTIONAL — GREAT BATMAN STORIES TO READ AFTERWARD", "storyNum": null, "arc": "Optional Extras", "item": "Absolute Batman", "type": "Story / Collection", "optional": true, "note": "", "why": "Excellent Batman stories outside the clean main continuity path."}];
+const acts = ["ACT I — BRUCE BECOMES BATMAN", "ACT II — THE BAT-FAMILY BEGINS", "ACT III — BATMAN STARTS LOSING PEOPLE", "ACT IV — CAN BRUCE BE REPLACED?", "ACT V — BATMAN AND GOTHAM", "ACT VI — ESTABLISHED BATMAN", "ACT VII — DAMIAN, MORRISON, AND BATMAN AS A LEGACY", "ACT VIII — THE MODERN BATMAN ERA", "ACT IX — BRUCE TRIES TO BUILD A LIFE", "ACT X — PRESENT-DAY BATMAN", "OPTIONAL — GREAT BATMAN STORIES TO READ AFTERWARD"];
+const storageKey = "batman-life-story-timeline-v1";
+let hideRead = false;
+let hideOptional = false;
+
+function loadProgress() {
+  try {
+    return JSON.parse(localStorage.getItem(storageKey)) || {};
+  } catch {
+    return {};
+  }
+}
+
+function saveProgress(progress) {
+  localStorage.setItem(storageKey, JSON.stringify(progress));
+}
+
+let progress = loadProgress();
+
+function groupByArc(items) {
+  const groups = [];
+  for (const item of items) {
+    let group = groups.find(g => g.arc === item.arc);
+    if (!group) {
+      group = { arc: item.arc, storyNum: item.storyNum, why: item.why, optional: item.optional, items: [] };
+      groups.push(group);
+    }
+    group.items.push(item);
+  }
+  return groups;
+}
+
+function render() {
+  const root = document.getElementById("sections");
+  root.innerHTML = "";
+
+  for (const act of acts) {
+    const actItems = issues.filter(x => x.act === act);
+    if (hideOptional && actItems.every(x => x.optional)) continue;
+
+    const section = document.createElement("section");
+    section.className = "section";
+
+    const heading = document.createElement("h2");
+    heading.className = "section-title";
+    heading.textContent = act;
+    section.appendChild(heading);
+
+    for (const arc of groupByArc(actItems)) {
+      if (hideOptional && arc.optional) continue;
+
+      const arcEl = document.createElement("div");
+      arcEl.className = "arc";
+
+      const arcHead = document.createElement("div");
+      arcHead.className = "arc-head";
+
+      const titleRow = document.createElement("div");
+      titleRow.className = "arc-title-row";
+
+      if (arc.storyNum) {
+        const num = document.createElement("span");
+        num.className = "arc-number";
+        num.textContent = `Story ${arc.storyNum}`;
+        titleRow.appendChild(num);
+      }
+
+      const title = document.createElement("span");
+      title.className = "arc-title";
+      title.textContent = arc.arc;
+      titleRow.appendChild(title);
+
+      if (arc.optional) {
+        const badge = document.createElement("span");
+        badge.className = "optional-badge";
+        badge.textContent = "Optional";
+        titleRow.appendChild(badge);
+      }
+
+      arcHead.appendChild(titleRow);
+
+      if (arc.why) {
+        const why = document.createElement("div");
+        why.className = "arc-why";
+        why.textContent = arc.why;
+        arcHead.appendChild(why);
+      }
+
+      arcEl.appendChild(arcHead);
+
+      const list = document.createElement("div");
+      list.className = "list";
+
+      for (const item of arc.items) {
+        const done = !!progress[item.order];
+
+        const row = document.createElement("label");
+        row.className = "issue" +
+          (item.optional ? " optional" : "") +
+          (done ? " done" : "") +
+          (hideRead && done ? " hidden" : "");
+        row.id = "issue-" + item.order;
+
+        const box = document.createElement("input");
+        box.type = "checkbox";
+        box.checked = done;
+        box.addEventListener("change", () => {
+          progress[item.order] = box.checked;
+          saveProgress(progress);
+          render();
+        });
+
+        const orderEl = document.createElement("div");
+        orderEl.className = "order";
+        orderEl.textContent = String(item.order).padStart(3, "0");
+
+        const content = document.createElement("div");
+        const titleEl = document.createElement("div");
+        titleEl.className = "reading-item";
+        titleEl.textContent = item.item;
+        content.appendChild(titleEl);
+
+        if (item.note) {
+          const note = document.createElement("div");
+          note.className = "note";
+          note.textContent = item.note;
+          content.appendChild(note);
+        }
+
+        row.appendChild(box);
+        row.appendChild(orderEl);
+        row.appendChild(content);
+        list.appendChild(row);
+      }
+
+      arcEl.appendChild(list);
+      section.appendChild(arcEl);
+    }
+
+    root.appendChild(section);
+  }
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const core = issues.filter(x => !x.optional);
+  const optional = issues.filter(x => x.optional);
+  const coreDone = core.filter(x => progress[x.order]).length;
+  const optionalDone = optional.filter(x => progress[x.order]).length;
+  const percent = core.length ? Math.round((coreDone / core.length) * 100) : 0;
+
+  document.getElementById("progressText").textContent = `${coreDone} / ${core.length}`;
+  document.getElementById("stats").textContent = `${percent}% of core timeline complete • Optional: ${optionalDone} / ${optional.length}`;
+  document.getElementById("progressFill").style.width = `${percent}%`;
+  document.getElementById("footerText").textContent = `Offline checklist • Progress saved with localStorage • ${issues.length} total entries`;
+}
+
+document.getElementById("hideReadBtn").addEventListener("click", () => {
+  hideRead = true;
+  render();
+});
+
+document.getElementById("showAllBtn").addEventListener("click", () => {
+  hideRead = false;
+  hideOptional = false;
+  document.getElementById("optionalBtn").textContent = "Hide Optional";
+  render();
+});
+
+document.getElementById("optionalBtn").addEventListener("click", () => {
+  hideOptional = !hideOptional;
+  document.getElementById("optionalBtn").textContent = hideOptional ? "Show Optional" : "Hide Optional";
+  render();
+});
+
+document.getElementById("jumpBtn").addEventListener("click", () => {
+  const next = issues.find(x => !x.optional && !progress[x.order]) || issues.find(x => !progress[x.order]);
+  if (!next) {
+    alert("You finished the whole Batman reading list. 🦇");
+    return;
+  }
+  hideRead = false;
+  if (next.optional) hideOptional = false;
+  document.getElementById("optionalBtn").textContent = hideOptional ? "Show Optional" : "Hide Optional";
+  render();
+  requestAnimationFrame(() => {
+    document.getElementById("issue-" + next.order)?.scrollIntoView({behavior:"smooth", block:"center"});
+  });
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (confirm("Reset all Batman timeline reading progress?")) {
+    progress = {};
+    saveProgress(progress);
+    render();
+  }
+});
+
+render();
+</script>
+</body>
+</html>
